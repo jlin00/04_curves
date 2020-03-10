@@ -71,19 +71,21 @@ struct matrix * make_hermite() {
   ====================*/
 struct matrix * generate_curve_coefs( double p0, double p1,
                                       double p2, double p3, int type) {
-  struct matrix *h;
-  struct matrix *g = new matrix(4, 1);
+  struct matrix *g = new_matrix(4, 1);
+  g->lastcol++;
   g->m[0][0] = p0;
-  g->m[0][1] = p1;
-  g->m[0][2] = p2;
-  g->m[0][3] = p3;
-  if (type == 0) { //hermite
+  g->m[1][0] = p1;
+  g->m[2][0] = p2;
+  g->m[3][0] = p3;
+  struct matrix *h = new_matrix(4, 4);
+  if (type == HERMITE) { //hermite
     h = make_hermite();
   }
-  else if (type == 1) { //bezier
+  else if (type == BEZIER){ //bezier
     h = make_bezier();
   }
   matrix_mult(h, g);
+  free_matrix(h);
   return g;
 }
 
